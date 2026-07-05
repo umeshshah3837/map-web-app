@@ -28,6 +28,8 @@ import {
 import { useLocalStorage } from '@/shared/hooks/useLocalStorage';
 import { allMarkersCleared, markersLoaded } from '@/features/map/slice/markersSlice';
 import { polygonsLoaded } from '@/features/map/slice/polygonSlice';
+import { exportGeoJson, importGeoJson } from '@/features/map/utils';
+import { useRef } from 'react';
 const MapToolbar = () => {
   const dispatch = useAppDispatch();
   const mode = useAppSelector((s) => s.mapUi.mode);
@@ -36,6 +38,7 @@ const MapToolbar = () => {
   const markers = useAppSelector((s) => s.markers.items);
   const polygons = useAppSelector((s) => s.polygons.items);
   const { save, load } = useLocalStorage();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const handleModeChange = (_e: React.MouseEvent<HTMLElement>, next: DrawMode | null) => {
     // ToggleButtonGroup passes null when the active button is clicked again
     const nextMode = next ?? DRAW_MODE.IDLE;
@@ -70,6 +73,20 @@ const MapToolbar = () => {
   const handleClearAll = () => {
     dispatch(allMarkersCleared());
     dispatch(allPolygonsCleared());
+  };
+
+  const handleExport = () => {
+    exportGeoJson(markers, polygons);
+  };
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const { markers: importedMarkers, polygons: importedPolygons } = await importGeoJson(file);
+
+    dispatch(markersLoaded([...markers, ...importedMarkers]));
+    dispatch(polygonsLoaded([...polygons, ...importedPolygons]));
   };
 
   return (
@@ -159,6 +176,24 @@ const MapToolbar = () => {
             disabled={markers.length === 0 && polygons.length === 0}
           >
             Clear All
+          </Button>
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={handleExport}
+            disabled={markers.length === 0 && polygons.length === 0}
+          >
+            Export
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".geojson,.json"
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+          <Button variant="outlined" color="inherit" onClick={() => fileInputRef.current?.click()}>
+            Import
           </Button>
         </Box>
       </MuiToolbar>

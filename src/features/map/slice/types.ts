@@ -18,3 +18,8 @@ export interface PolygonFeature {
   createdAt: number;
   label?: string;
 }
+
+export interface ParsedGeoJson {
+  markers: MarkerFeature[];
+  polygons: PolygonFeature[];
+}
