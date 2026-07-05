@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-
+import markersReducer from '@/features/map/slice/markersSlice';
+import mapUiReducer from '@/features/map/slice/mapStateSlice';
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    markers: markersReducer,
+    mapUi: mapUiReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

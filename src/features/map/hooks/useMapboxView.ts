@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { INITIAL_CENTER, INITIAL_ZOOM, MAP_STYLE } from '@/constant';
+// import { INITIAL_CENTER, INITIAL_ZOOM, MAP_STYLE } from '@/features/map/components/constant';
+import { MAP_STYLE, INITIAL_CENTER, INITIAL_ZOOM } from '@/features/map/constants';
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN ?? '';
 
 /**
