@@ -4,6 +4,7 @@ import { useMapboxMap } from '@/features/map/hooks/useMapboxView';
 import { useAppSelector } from '@/app/hooks';
 import { useMarkerLayer } from '@/features/map/hooks/useMarkerLayer';
 import { useMapInteractions } from '@/features/map/hooks/useMapInteractions';
+import { usePolygonLayers } from '@/features/map/hooks/usePolygonLayer';
 
 /**
  * Renders the Mapbox canvas
@@ -12,11 +13,14 @@ const MapView = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const { mapRef } = useMapboxMap(containerRef);
+  const polygons = useAppSelector((s) => s.polygons.items);
+  const draftVertices = useAppSelector((s) => s.polygons.draftVertices);
   const markers = useAppSelector((s) => s.markers.items);
   const selectedMarkerId = useAppSelector((s) => s.markers.selectedId);
   const mode = useAppSelector((s) => s.mapUi.mode);
   useMarkerLayer(mapRef, markers, selectedMarkerId);
-  useMapInteractions(mapRef, mode, []);
+  usePolygonLayers(mapRef, draftVertices, polygons);
+  useMapInteractions(mapRef, mode, draftVertices);
   return (
     <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
       <Box

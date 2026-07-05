@@ -36,7 +36,13 @@ const MarkerList = () => {
         >
           <Stack
             spacing={1}
-            sx={{ direction: 'row', alignItems: 'center', width: '100%', minWidth: 0 }}
+            sx={{
+              flexDirection: 'row',
+              direction: 'row',
+              alignItems: 'center',
+              width: '100%',
+              minWidth: 0,
+            }}
           >
             <Chip label={`M${i + 1}`} size="small" color="primary" sx={{ fontWeight: 600 }} />
             <ListItemText

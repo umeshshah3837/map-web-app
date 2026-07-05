@@ -10,3 +10,11 @@ export interface MarkerFeature {
 }
 
 export type DrawMode = (typeof DRAW_MODE)[keyof typeof DRAW_MODE];
+
+export interface PolygonFeature {
+  id: string;
+  vertices: LngLat[];
+  areaSqMeters: number; //Computed via Turf.js, in square meters.
+  createdAt: number;
+  label?: string;
+}

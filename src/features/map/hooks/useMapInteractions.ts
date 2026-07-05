@@ -4,7 +4,7 @@ import { useAppDispatch } from '@/app/hooks';
 import { markerAdded } from '@/features/map/slice/markersSlice';
 import { type DrawMode, type LngLat } from '@/features/map/slice/types';
 import { DRAW_MODE } from '@/features/map/constants';
-
+import { draftVertexAdded } from '@/features/map/slice/polygonSlice';
 /**
  * Handles map interactions for drawing tools.
  *
@@ -33,6 +33,8 @@ export function useMapInteractions(
       const coords: LngLat = [e.lngLat.lng, e.lngLat.lat];
       if (modeRef.current === DRAW_MODE.MARKER) {
         dispatch(markerAdded(coords));
+      } else if (modeRef.current === DRAW_MODE.POLYGON) {
+        dispatch(draftVertexAdded(coords));
       }
     };
 

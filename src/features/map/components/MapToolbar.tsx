@@ -5,24 +5,42 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   IconButton,
+  Tooltip,
+  Button,
 } from '@mui/material';
 import PlaceIcon from '@mui/icons-material/Place';
 import PentagonOutlinedIcon from '@mui/icons-material/PentagonOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
+import UndoIcon from '@mui/icons-material/Undo';
 
+import CheckIcon from '@mui/icons-material/Check';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { modeSet, sidebarOpenSet } from '@/features/map/slice/mapStateSlice';
 import { type DrawMode } from '@/features/map/slice/types';
 import { DRAW_MODE } from '@/features/map/constants';
 import { SIDEBAR_WIDTH } from '@/features/map/constants';
+import {
+  draftCleared,
+  draftCommitted,
+  draftVertexRemovedLast,
+} from '@/features/map/slice/polygonSlice';
 const MapToolbar = () => {
   const dispatch = useAppDispatch();
   const mode = useAppSelector((s) => s.mapUi.mode);
   const sidebarOpen = useAppSelector((s) => s.mapUi.sidebarOpen);
+  const draftVertices = useAppSelector((s) => s.polygons.draftVertices);
   const handleModeChange = (_e: React.MouseEvent<HTMLElement>, next: DrawMode | null) => {
     // ToggleButtonGroup passes null when the active button is clicked again
-    const nextMode = next ?? 'idle';
+    const nextMode = next ?? DRAW_MODE.IDLE;
+    if (mode === DRAW_MODE.POLYGON && nextMode !== DRAW_MODE.POLYGON && draftVertices.length > 0) {
+      dispatch(draftCleared());
+    }
     dispatch(modeSet(nextMode));
+  };
+  const finishPolygon = () => {
+    if (draftVertices.length < 3) return;
+    dispatch(draftCommitted(draftVertices));
+    dispatch(modeSet(DRAW_MODE.IDLE));
   };
 
   return (
@@ -66,6 +84,33 @@ const MapToolbar = () => {
               <PentagonOutlinedIcon fontSize="small" /> Add Vertix
             </ToggleButton>
           </ToggleButtonGroup>
+          {mode === 'polygon' && (
+            <>
+              <Tooltip title="Remove the last point placed">
+                <span>
+                  <Button
+                    size="small"
+                    color="inherit"
+                    startIcon={<UndoIcon />}
+                    disabled={draftVertices.length === 0}
+                    onClick={() => dispatch(draftVertexRemovedLast())}
+                  >
+                    Undo
+                  </Button>
+                </span>
+              </Tooltip>
+              <Button
+                size="small"
+                variant="contained"
+                color="success"
+                startIcon={<CheckIcon />}
+                disabled={draftVertices.length < 3}
+                onClick={finishPolygon}
+              >
+                Finish ({draftVertices.length} pts)
+              </Button>
+            </>
+          )}
         </Box>
       </MuiToolbar>
     </AppBar>
