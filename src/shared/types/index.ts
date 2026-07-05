@@ -1,0 +1,1 @@
+// common type file for shared component or hooks
