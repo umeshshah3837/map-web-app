@@ -1,16 +1,15 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from './assets/vite.svg';
-import heroImg from './assets/hero.png';
+import { Box } from '@mui/material';
+import MapView from '@/features/map/components/MapView';
 import './App.css';
-import Button from '@/components/Button';
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <Button />
-    </>
+    <Box sx={{ height: '100dvh', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ flex: 1, display: 'flex', minHeight: 0 }}>
+        <Box component="main" sx={{ flex: 1, position: 'relative', minWidth: 0 }}>
+          <MapView />
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
