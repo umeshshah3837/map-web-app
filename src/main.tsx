@@ -5,11 +5,14 @@ import App from './App.tsx';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store.ts';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
   </StrictMode>,
 );
