@@ -9,3 +9,4 @@ export const DRAW_MODE = {
   MARKER: 'marker',
   POLYGON: 'polygon',
 } as const;
+export const SIDEBAR_WIDTH = 320;

@@ -37,9 +37,15 @@ const markersSlice = createSlice({
     markerSelected(state, action: PayloadAction<string | null>) {
       state.selectedId = action.payload;
     },
+    markerRemoved(state, action: PayloadAction<string>) {
+      state.items = state.items.filter((m) => m.id !== action.payload);
+      if (state.selectedId === action.payload) {
+        state.selectedId = null;
+      }
+    },
   },
 });
 
-export const { markerAdded, markerSelected } = markersSlice.actions;
+export const { markerAdded, markerSelected, markerRemoved } = markersSlice.actions;
 
 export default markersSlice.reducer;
