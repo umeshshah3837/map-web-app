@@ -1,73 +1,87 @@
-# React + TypeScript + Vite
+# Map Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **Map Web Application** built with **React**, **TypeScript**, **Redux Toolkit**, and **Mapbox GL JS**. The application allows users to add markers, draw polygons, manage map data, and import/export GeoJSON files through an intuitive and responsive interface.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+### Markers
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Add Markers** – Click anywhere on the map to place markers.
+- **Coordinate Preview** – Hover over a marker to view its latitude and longitude coordinates.
 
-## Expanding the ESLint configuration
+### Polygon Drawing
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Add Vertices** – Click on the map to add vertices and create a polygon.
+- **Undo** – Remove the last added vertex.
+- **Finish Polygon** – Complete the polygon after adding the required vertices. The application automatically calculates and displays the polygon's area in **m²** or **km²**.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Sidebar
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- View a list of all added **markers** and **polygons**.
+- Remove individual markers or polygons directly from the sidebar.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+### Clear All
+
+- Remove all markers and polygons from the map, resetting it to its initial state.
+
+### Save & Load
+
+- **Save Data** – Save the current map data to **Local Storage**.
+- **Load Data** – Restore the previously saved map data from **Local Storage**.
+
+### GeoJSON Import & Export
+
+- **Export GeoJSON** – Download all map data as a standard **GeoJSON FeatureCollection**.
+- **Import GeoJSON** – Import `.geojson` or `.json` files. Supported **Point** and **Polygon** features are merged into the current map.
+
+### Responsive Design
+
+- Fully responsive and optimized for both **desktop** and **mobile** devices.
+
+---
+
+## Setup
+
+### 1. Install Dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Configure the Mapbox Access Token
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+Get a free access token from:
+https://account.mapbox.com/access-tokens/
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+Create a `.env` file in the project root and add:
+
+```env
+VITE_MAPBOX_TOKEN=your_mapbox_access_token
+```
+
+### 3. Start the Development Server
+
+```bash
+npm run dev
+```
+
+### 4. Build for Production
+
+```bash
+npm run build
+```
+
+---
+
+## Customize the Initial Map Location
+
+To change the default map center and zoom level, edit:
+
+`src/features/map/utils/index.ts`
+
+```ts
+export const INITIAL_CENTER = [longitude, latitude];
+export const INITIAL_ZOOM = 13.5;
 ```
