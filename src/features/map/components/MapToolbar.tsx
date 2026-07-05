@@ -25,6 +25,7 @@ import {
   draftVertexRemovedLast,
   allPolygonsCleared,
 } from '@/features/map/slice/polygonSlice';
+import { MPButton } from '@/shared';
 import { useLocalStorage } from '@/shared/hooks/useLocalStorage';
 import { allMarkersCleared, markersLoaded } from '@/features/map/slice/markersSlice';
 import { polygonsLoaded } from '@/features/map/slice/polygonSlice';
@@ -134,18 +135,19 @@ const MapToolbar = () => {
             <>
               <Tooltip title="Remove the last point placed">
                 <span>
-                  <Button
+                  <MPButton
                     size="small"
                     color="inherit"
+                    variant="outlined"
                     startIcon={<UndoIcon />}
                     disabled={draftVertices.length === 0}
                     onClick={() => dispatch(draftVertexRemovedLast())}
                   >
                     Undo
-                  </Button>
+                  </MPButton>
                 </span>
               </Tooltip>
-              <Button
+              <MPButton
                 size="small"
                 variant="contained"
                 color="success"
@@ -154,37 +156,37 @@ const MapToolbar = () => {
                 onClick={finishPolygon}
               >
                 Finish ({draftVertices.length} pts)
-              </Button>
+              </MPButton>
             </>
           )}
-          <Button
+          <MPButton
             variant="outlined"
             color="inherit"
             onClick={handleSave}
             disabled={markers.length === 0 && polygons.length === 0}
           >
             Save Data
-          </Button>
+          </MPButton>
 
-          <Button variant="outlined" color="inherit" onClick={handleLoad}>
+          <MPButton variant="outlined" color="inherit" onClick={handleLoad}>
             Load Data
-          </Button>
-          <Button
+          </MPButton>
+          <MPButton
             variant="outlined"
             color="inherit"
             onClick={handleClearAll}
             disabled={markers.length === 0 && polygons.length === 0}
           >
             Clear All
-          </Button>
-          <Button
+          </MPButton>
+          <MPButton
             variant="outlined"
             color="inherit"
             onClick={handleExport}
             disabled={markers.length === 0 && polygons.length === 0}
           >
             Export
-          </Button>
+          </MPButton>
           <input
             ref={fileInputRef}
             type="file"
@@ -192,9 +194,13 @@ const MapToolbar = () => {
             style={{ display: 'none' }}
             onChange={handleFileChange}
           />
-          <Button variant="outlined" color="inherit" onClick={() => fileInputRef.current?.click()}>
+          <MPButton
+            variant="outlined"
+            color="inherit"
+            onClick={() => fileInputRef.current?.click()}
+          >
             Import
-          </Button>
+          </MPButton>
         </Box>
       </MuiToolbar>
     </AppBar>
