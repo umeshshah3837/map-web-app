@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { DRAW_MODE, type DrawMode } from '@/features/map/slice/types';
+import { type DrawMode } from '@/features/map/slice/types';
+import { DRAW_MODE } from '@/features/map/constants';
 
 export interface MapUiState {
   mode: DrawMode;

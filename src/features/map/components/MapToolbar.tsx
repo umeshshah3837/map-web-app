@@ -4,8 +4,10 @@ import PentagonOutlinedIcon from '@mui/icons-material/PentagonOutlined';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { modeSet } from '@/features/map/slice/mapStateSlice';
-import { DRAW_MODE, type DrawMode } from '@/features/map/slice/types';
-export default function MapToolbar() {
+import { type DrawMode } from '@/features/map/slice/types';
+import { DRAW_MODE } from '@/features/map/constants';
+
+const MapToolbar = () => {
   const dispatch = useAppDispatch();
   const mode = useAppSelector((s) => s.mapUi.mode);
   const handleModeChange = (_e: React.MouseEvent<HTMLElement>, next: DrawMode | null) => {
@@ -45,4 +47,6 @@ export default function MapToolbar() {
       </MuiToolbar>
     </AppBar>
   );
-}
+};
+
+export default MapToolbar;

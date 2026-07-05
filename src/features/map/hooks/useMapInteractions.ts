@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import type { Map as MapboxMap, MapMouseEvent } from 'mapbox-gl';
 import { useAppDispatch } from '@/app/hooks';
 import { markerAdded } from '@/features/map/slice/markersSlice';
-import { DRAW_MODE, type DrawMode, type LngLat } from '@/features/map/slice/types';
+import { type DrawMode, type LngLat } from '@/features/map/slice/types';
+import { DRAW_MODE } from '@/features/map/constants';
 
 /**
  * Handles map interactions for drawing tools.
