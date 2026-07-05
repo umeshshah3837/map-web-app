@@ -23,7 +23,6 @@ const MarkerList = () => {
       </Typography>
     );
   }
-  console.log('markers', markers);
 
   return (
     <List dense disablePadding>

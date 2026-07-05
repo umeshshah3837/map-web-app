@@ -10,3 +10,6 @@ export const DRAW_MODE = {
   POLYGON: 'polygon',
 } as const;
 export const SIDEBAR_WIDTH = 320;
+export const STORAGE_KEYS = {
+  MAP_DATA: 'map-data',
+} as const;

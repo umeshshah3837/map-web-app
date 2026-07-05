@@ -43,9 +43,18 @@ const markersSlice = createSlice({
         state.selectedId = null;
       }
     },
+    markersLoaded(state, action: PayloadAction<MarkerFeature[]>) {
+      state.items = action.payload;
+      state.selectedId = null;
+    },
+    allMarkersCleared(state) {
+      state.items = [];
+      state.selectedId = null;
+    },
   },
 });
 
-export const { markerAdded, markerSelected, markerRemoved } = markersSlice.actions;
+export const { markerAdded, markerSelected, markerRemoved, markersLoaded, allMarkersCleared } =
+  markersSlice.actions;
 
 export default markersSlice.reducer;

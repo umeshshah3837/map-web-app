@@ -30,7 +30,6 @@ const polygonsSlice = createSlice({
   reducers: {
     /** Add a vertex to the polygon currently being drawn. */
     draftVertexAdded(state, action: PayloadAction<LngLat>) {
-      console.log('draftVertexAdded', action.payload);
       state.draftVertices.push(action.payload);
     },
     /** Remove the most recently added draft vertex (undo last click). */
@@ -68,6 +67,16 @@ const polygonsSlice = createSlice({
     polygonSelected(state, action: PayloadAction<string | null>) {
       state.selectedId = action.payload;
     },
+    polygonsLoaded(state, action: PayloadAction<PolygonFeature[]>) {
+      state.items = action.payload;
+      state.draftVertices = [];
+      state.selectedId = null;
+    },
+    allPolygonsCleared(state) {
+      state.items = [];
+      state.draftVertices = [];
+      state.selectedId = null;
+    },
   },
 });
 
@@ -78,6 +87,8 @@ export const {
   draftCommitted,
   polygonRemoved,
   polygonSelected,
+  polygonsLoaded,
+  allPolygonsCleared,
 } = polygonsSlice.actions;
 
 export default polygonsSlice.reducer;

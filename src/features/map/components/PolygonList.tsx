@@ -23,7 +23,7 @@ const PolygonList = () => {
   if (polygons.length === 0) {
     return (
       <Typography variant="body2" color="text.secondary">
-        No polygons yet. Choose “Draw Polygon”, click to place vertices, then Finish.
+        No polygons yet. Choose “Add Vertix”, click to place vertices, then Finish.
       </Typography>
     );
   }

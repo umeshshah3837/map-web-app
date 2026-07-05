@@ -16,19 +16,26 @@ import UndoIcon from '@mui/icons-material/Undo';
 import CheckIcon from '@mui/icons-material/Check';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { modeSet, sidebarOpenSet } from '@/features/map/slice/mapStateSlice';
-import { type DrawMode } from '@/features/map/slice/types';
+import { type DrawMode, type MarkerFeature, type PolygonFeature } from '@/features/map/slice/types';
 import { DRAW_MODE } from '@/features/map/constants';
-import { SIDEBAR_WIDTH } from '@/features/map/constants';
+import { SIDEBAR_WIDTH, STORAGE_KEYS } from '@/features/map/constants';
 import {
   draftCleared,
   draftCommitted,
   draftVertexRemovedLast,
+  allPolygonsCleared,
 } from '@/features/map/slice/polygonSlice';
+import { useLocalStorage } from '@/shared/hooks/useLocalStorage';
+import { allMarkersCleared, markersLoaded } from '@/features/map/slice/markersSlice';
+import { polygonsLoaded } from '@/features/map/slice/polygonSlice';
 const MapToolbar = () => {
   const dispatch = useAppDispatch();
   const mode = useAppSelector((s) => s.mapUi.mode);
   const sidebarOpen = useAppSelector((s) => s.mapUi.sidebarOpen);
   const draftVertices = useAppSelector((s) => s.polygons.draftVertices);
+  const markers = useAppSelector((s) => s.markers.items);
+  const polygons = useAppSelector((s) => s.polygons.items);
+  const { save, load } = useLocalStorage();
   const handleModeChange = (_e: React.MouseEvent<HTMLElement>, next: DrawMode | null) => {
     // ToggleButtonGroup passes null when the active button is clicked again
     const nextMode = next ?? DRAW_MODE.IDLE;
@@ -41,6 +48,28 @@ const MapToolbar = () => {
     if (draftVertices.length < 3) return;
     dispatch(draftCommitted(draftVertices));
     dispatch(modeSet(DRAW_MODE.IDLE));
+  };
+
+  const handleSave = () => {
+    save(STORAGE_KEYS.MAP_DATA, {
+      markers,
+      polygons,
+    });
+  };
+  const handleLoad = () => {
+    const data = load<{
+      markers: MarkerFeature[];
+      polygons: PolygonFeature[];
+    }>(STORAGE_KEYS.MAP_DATA);
+
+    if (!data) return;
+
+    dispatch(markersLoaded(data.markers));
+    dispatch(polygonsLoaded(data.polygons));
+  };
+  const handleClearAll = () => {
+    dispatch(allMarkersCleared());
+    dispatch(allPolygonsCleared());
   };
 
   return (
@@ -111,6 +140,26 @@ const MapToolbar = () => {
               </Button>
             </>
           )}
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={handleSave}
+            disabled={markers.length === 0 && polygons.length === 0}
+          >
+            Save Data
+          </Button>
+
+          <Button variant="outlined" color="inherit" onClick={handleLoad}>
+            Load Data
+          </Button>
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={handleClearAll}
+            disabled={markers.length === 0 && polygons.length === 0}
+          >
+            Clear All
+          </Button>
         </Box>
       </MuiToolbar>
     </AppBar>
